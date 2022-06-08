@@ -103,13 +103,65 @@ router.put('/:id', (req, res) => {
                 .catch(err => {
                     res.status(500).json({
                         message: "The post information could not be retrieved",
-                    })
+                    });
                 })
         })
         .catch(err => {
             res.status(500).json({
                 message: "The post information could not be modified",
-            })
+            });
+        })
+});
+
+router.delete('/:id', (req, res) => {
+    Posts.findById(req.params.id)
+        .then(post => {
+            if (post == null) {
+                res.status(404).json({
+                    message: "The post with the specified ID does not exist"
+                });
+                return;
+            }
+            Posts.remove(req.params.id)
+                .then(deleteCount => {
+                    res.json(post)
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        message: "The post could not be removed",
+                    });
+                })
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: "The post information could not be retrieved",
+            });
+        })
+});
+
+router.get('/:id/comments', (req, res) => {
+    Posts.findById(req.params.id)
+        .then(post => {
+            if (post == null) {
+                res.status(404).json({
+                    message: "The post with the specified ID does not exist"
+                })
+                return;
+            }
+            Posts.findPostComments(req.params.id)
+                .then(comments => {
+                    res.json(comments)
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        message: "The comments information could not be retrieved"
+                    })
+                })
+        })
+        .catch(err => {
+            res.status(500).json({ 
+                message: "The post information could not be retrieved"
+             })
         })
 });
 module.exports = router;
