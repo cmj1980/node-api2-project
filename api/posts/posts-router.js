@@ -30,5 +30,31 @@ router.get('/:id', (req, res) => {
            console.log(err);
            res.status(500).json({ message: "The post information could not be retrieved" });
        })
-})
+});
+
+router.post('/', (req, res) => {
+    const { title, contents } = req.body;
+       if(typeof title !== 'string' || title === '') {
+           res.status(400).json({ message: "Please provide title and contents for the post" });
+           return;
+       } 
+       if(typeof contents !== 'string' || contents === '') {
+           res.status(400).json({ message: "Please provide title and contents for the post" });
+           return;
+       }
+       Posts.insert(req.body)
+        .then(newPostId => {
+            Posts.findById(newPostId.id)
+            .then(newPost => {
+                res.status(201).json(newPost)
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: "There was an error while saving the post to the database",
+                err: err.message,
+                stack: err.stack
+            });
+        })    
+});
 module.exports = router;
