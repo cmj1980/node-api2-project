@@ -11,8 +11,6 @@ router.get('/', (req, res) => {
         .catch(err => {
             res.status(500).json({
                 message: "The posts information could not be retrieved",
-                err: err.message,
-                stack: err.stack
             });
         })
 });
@@ -63,8 +61,6 @@ router.post('/', (req, res) => {
         .catch(err => {
             res.status(500).json({
                 message: "There was an error while saving the post to the database",
-                err: err.message,
-                stack: err.stack
             });
         })
 });
@@ -98,8 +94,6 @@ router.put('/:id', (req, res) => {
         .catch(err => {
             res.status(500).json({
                 message: "The post information could not be retrieved",
-                err: err.message,
-                stack: err.stack
             })
         })
     Posts.update(req.params.id, req.body)
@@ -109,16 +103,12 @@ router.put('/:id', (req, res) => {
                 .catch(err => {
                     res.status(500).json({
                         message: "The post information could not be retrieved",
-                        err: err.message,
-                        stack: err.stack
                     })
                 })
         })
         .catch(err => {
             res.status(500).json({
                 message: "The post information could not be modified",
-                err: err.message,
-                stack: err.stack
             })
         })
 });
